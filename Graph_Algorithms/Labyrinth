@@ -1,0 +1,72 @@
+#include <bits/stdc++.h>
+using namespace std;
+ 
+const long long N = 1001;
+string grid[N];
+long long sx,sy,ex,ey;
+bool vis[N][N];
+char parent[N][N];
+long long n,m;
+ 
+bool is_valid(long long x,long long y){
+    return x>=0 && x<n && y>=0 && y<m && !vis[x][y] && grid[x][y]!='#';
+}
+ 
+ 
+int main(){
+        cin>>n>>m;
+        for(long long i=0;i<n;i++){
+            cin>>grid[i];
+            for(long long j=0;j<m;j++){
+                if(grid[i][j]=='A'){
+                    sx = i;
+                    sy = j;
+                }
+                else if(grid[i][j]=='B'){
+                    ex = i;
+                    ey = j;
+                }
+            }
+        }
+ 
+        queue<pair<long long,long long>> q;
+        q.push({sx,sy});
+        vis[sx][sy] = true;
+ 
+        long long dx[] = {-1,1,0,0};
+        long long dy[] = {0,0,-1,1};
+        char move[] = {'U','D','L','R'};
+ 
+        while(!q.empty()){
+            auto [x,y] = q.front();
+            q.pop();
+ 
+            for(long long i=0;i<4;i++){
+                long long nx = x+dx[i];
+                long long ny = y+dy[i];
+                if(is_valid(nx,ny)){
+                    vis[nx][ny] = true;
+                    parent[nx][ny] = move[i];
+                    q.push({nx,ny});
+                }
+            }
+        }
+ 
+        if(!vis[ex][ey]){
+            cout<<"NO\n";
+            return 0;
+        }
+ 
+        string path;
+        long long x=ex;long long y=ey;
+        while(x!=sx || y!=sy){
+            char d = parent[x][y];
+            path+=d;
+            if(d=='U')x++;
+            if(d=='D')x--;
+            if(d=='L')y++;
+            if(d=='R')y--;
+        }
+        reverse(path.begin(),path.end());
+        cout<<"YES\n"<<path.size()<<'\n'<<path<<'\n';
+    }

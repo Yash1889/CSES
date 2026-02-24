@@ -1,0 +1,49 @@
+#include <bits/stdc++.h>
+using namespace std;
+ 
+ 
+int main(){
+    long long n,m;
+    cin>>n>>m;
+    vector<vector<long long>> adj(n+1);
+    vector<bool> vis(n+1,false);
+ 
+    for(long long i=0;i<m;i++){
+        long long u,v;
+        cin>>u>>v;
+        adj[u].push_back(v);
+        adj[v].push_back(u);
+    }
+    vector<long long> par(n+1,-1);
+    queue<int> q;
+    q.push(1);
+    vis[1] = true;
+    while(!q.empty()){
+        int u = q.front();
+        q.pop();
+        for(int v:adj[u]){
+            if(!vis[v]){
+                vis[v] = true;
+                par[v] = u;
+                q.push(v);
+            }
+        }
+    }
+    
+    vector<long long> path;
+    if(vis[n]==false){
+        cout<<"IMPOSSIBLE"<<endl;
+    }
+    else{
+        long long v = n;
+        while(v!=-1){
+            path.push_back(v);
+            v = par[v];
+        }
+        reverse(path.begin(),path.end());
+        cout<<path.size()<<"\n";
+        for(long long v:path){
+            cout<<v<<" ";
+        }
+    }   
+}

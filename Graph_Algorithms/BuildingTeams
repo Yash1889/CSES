@@ -1,0 +1,40 @@
+#include <bits/stdc++.h>
+using namespace std;
+ 
+int main(){
+    int n,m;
+    cin>>n>>m;
+    int u,v;
+    vector<vector<int>> adj(n+1);
+    for(int i=0;i<m;i++){
+        cin>>u>>v;
+        adj[u].push_back(v);
+        adj[v].push_back(u);
+    }
+ 
+    vector<int> col(n+1,0);
+ 
+    for(int i=1;i<=n;i++){
+        if(col[i])continue;
+        col[i]=1;
+        queue<int> q;
+        q.push(i);
+        while(!q.empty()){
+            int t = q.front();
+            q.pop();
+            for(auto p:adj[t]){
+                if(!col[p]){
+                    col[p] = 3-col[t];
+                    q.push(p);
+                }
+                else if(col[p]==col[t]){
+                    cout<<"IMPOSSIBLE"<<endl;
+                    return 0;
+                }
+            }
+        }
+    }
+    for(int i=1;i<=col.size()-1;i++){
+        cout<<col[i]<<" ";
+    }
+}

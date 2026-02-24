@@ -1,0 +1,43 @@
+#include <bits/stdc++.h>
+using namespace std;
+ 
+int r,c;
+char grid[1001][1001];
+bool visited[1001][1001];
+int dx[] = {0,1,0,-1};
+int dy[] = {1,0,-1,0};
+ 
+bool isvalid(int x,int y){
+    return (x>=0 && y>=0 && x<r && y<c && !visited[x][y] && grid[x][y]=='.');
+}
+ 
+void dfs(int x,int y){
+    visited[x][y] = true;
+    for(int dir=0;dir<4;dir++){
+        int new_r = x+dx[dir];
+        int new_c = y+dy[dir];
+        if(isvalid(new_r,new_c)){
+            dfs(new_r,new_c);
+        }
+    }
+}
+ 
+ 
+int main(){
+    cin>>r>>c;
+    for(int i=0;i<r;i++){
+        for(int j=0;j<c;j++){
+            cin>>grid[i][j];
+        }
+    }
+    int rooms = 0;
+    for(int i=0;i<r;i++){
+        for(int j=0;j<c;j++){
+            if(!visited[i][j] && grid[i][j]=='.'){
+                dfs(i,j);
+                rooms++;
+            }
+        }
+    }
+    cout<<rooms<<endl;
+}

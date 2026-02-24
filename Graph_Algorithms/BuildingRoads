@@ -1,0 +1,36 @@
+#include <bits/stdc++.h>
+using namespace std;
+ 
+ 
+void dfs(long long c, vector<long long> &vis, vector<vector<long long>> &adj){
+    vis[c] = true;
+    for(auto a:adj[c]){
+        if(!vis[a]){
+            dfs(a,vis,adj);
+        }
+    }
+}
+ 
+int main(){
+    long long n,m;
+    cin>>n>>m;
+    vector<vector<long long>> adj(n+1);
+    for(long long i=0;i<m;i++){
+        long long u,v;
+        cin>>u>>v;
+        adj[u].push_back(v);
+        adj[v].push_back(u);            
+    }
+    vector<long long> ans;
+    vector<long long> vis(n+1,false);
+    for(long long i=1;i<=n;i++){
+        if(!vis[i]){
+            ans.push_back(i);
+            dfs(i,vis,adj);
+        }
+    }
+    cout<<ans.size()-1<<endl;
+    for(long long i=1;i<ans.size();i++){
+        cout<<ans[0]<<" "<<ans[i]<<endl;
+    }
+}
